@@ -16,3 +16,4 @@ const options = {
       console.log("Error connecting Database instance due to: ", err);
     }
   );
+  require("../models/lotteryInfoSchema");
