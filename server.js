@@ -5,9 +5,17 @@ require('./db.js');
 const {save_user_information,get_total_amount} = require('./models/server_db');
 const path =require('path');
 const publicPath=path.join(__dirname,'./public');
+var paypal = require('paypal-rest-sdk');
 
 app.use(bodyParser.json());
 app.use(express.static(publicPath));
+
+/*paypal configuration*/
+paypal.configure({
+    'mode': 'sandbox', //sandbox or live
+    'client_id': 'AX3yoPWh5IpZlMRPDF2RTEFNyawxqLMcs6ynZePbtkpFEpd8kvgl5YxwHRpk1EhjvIehiGFCjFSPpmgN',
+    'client_secret': 'EJvPDiVtpKwjMbhQnACneWEh3ff1byBqbdKnaMur0ju6ZSCsTmwbuLIEZNkXfOq4UUBHe7Mo5rnU6Hoz'
+  });
 
 app.post('/post_info', async(req, res) => {
     var email = req.body.email;
