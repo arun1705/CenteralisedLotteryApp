@@ -94,7 +94,7 @@ app.post('/post_info', async (req, res) => {
 
 
 
-app.get('/success', (req, res) => {
+app.get('/success', async(req, res) => {
     const payerId = req.query.PayerID;
     const paymentId = req.query.paymentId;
     var execute_payment_json = {
@@ -115,6 +115,12 @@ app.get('/success', (req, res) => {
 
         }
     });
+
+    /* delete all mogodb  users */
+    if (req.session.winner_picked) {
+        var deleted = await delete_users();
+    }
+    req.session.winner_picked = false;
     res.redirect('http://localhost:3000');
 });
 
@@ -136,13 +142,11 @@ app.get('/pick_winner', async (req, res) => {
     var list_of_participants = await get_list_of_participants();
     list_of_participants = JSON.parse(JSON.stringify(list_of_participants));
     var email_array = [];
-    list_of_participants.forEach(function(element){
+    list_of_participants.forEach(function (element) {
         email_array.push(element.email);
     });
-    var winner_email = email_array[Math.floor(Math.random()* email_array.length)];
-    console.log(winner_email)
-    return true;
-
+    var winner_email = email_array[Math.floor(Math.random() * email_array.length)];
+    req.session.winner_picked = true;
     var create_payment_json = {
         "intent": "sale",
         "payer": {
