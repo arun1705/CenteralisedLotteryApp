@@ -40,3 +40,15 @@ exports.get_total_amount = () =>
                 reject('Could not get total amount');
             })
     });
+
+
+exports.get_list_of_participants = () =>
+    new Promise((resolve, reject) => {
+
+        user.find().select({ email: 1,_id: 0}).then(data => {
+            resolve(data);
+        })
+        .catch(err => {
+            reject('Could not fetch list of participants');
+        })
+    });
