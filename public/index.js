@@ -10,9 +10,14 @@ constructor(props){
 
 async componentDidMount(){
    const result = await axios.get('/get_total_amount');
+   console.log(result)
+   if(result.data.length==0){
+    this.setState({total_amount : []});
+   }else{
    this.setState({total_amount : result.data["0"].total_amount});
+   }
 }
-
+  
 onSubmit=async(event)=>{
     event.preventDefault();
     const response= await axios.post('/post_info',{
